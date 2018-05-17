@@ -11,6 +11,46 @@ mongoose.connect('mongodb://localhost/selmaphone');
 // mongoose.connection.on('error', (e)=>{ console.error(e); });
 // mongoose.connection.once('open', ()=>{ console.info('db connected');});
 
+// so lets try mysql 8 with their shiny new mysqlx connector
+const mysqlx = require('@mysql/xdevapi');
+
+const options = {
+  host: 'localhost',
+  port: 33060,
+  password: 'mysqlmysql', // mysqlmysql
+  user: 'root',
+  schema: 'selmaphone'
+};
+
+(async function () {
+  let mysql;
+  let statement = 'SELECT * FROM selmaphone.cart'; // CREATE TABLE selmaphone.cart (id INT) // 'ALTER TABLE selmaphone.cart ADD title VARCHAR(255)'
+
+  try {
+    mysql = await mysqlx.getSession(options);
+    const collection = await mysql.getSchema(options.schema);
+    console.log('collection', collection);
+    //let result = await mysql.sql('DROP TABLE selmaphone.cart').execute();
+    //result = await mysql.sql('CREATE TABLE selmaphone.cart (id INT AUTOINCREMENT)').execute();
+    //let table = await collection.getTable('cart')
+    //          .insert({'title': 'foobar'})
+    //          .execute();
+    // let result = await table.select();
+    // result = await result.execute();
+    collection.getTable('cart')
+            .select(['title'])
+            .execute(row => {
+                console.log(row); // ['foo', 42]
+            });
+    //console.log('mysql result', result);
+  } catch (err) {
+    console.error(err.message);
+  } finally {
+    mysql && mysql.close();
+  }
+})();
+
+
 // Create an Express app
 const app = express();
 // with body parser (needed to post json)
