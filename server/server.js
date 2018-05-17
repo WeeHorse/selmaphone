@@ -122,18 +122,38 @@ app.get(restPath + '/product/:id', async (req, res)=>{
   res.json(product);
 });
 
-// add a product to the shopping cart
+// add items to the shopping cart
 app.post(restPath + '/cart', async (req, res)=>{
-  // do we have a shopping cart?
+  // first - do we have a shopping cart?
+  let cart;
   if(!req.user.cart){
-    let cart = await new Cart({user:req.user._id});
+    cart = await new Cart({user:req.user._id});
     await cart.save();
     req.user.cart = cart;
     await req.user.save();
+  }else{
+    cart = await Cart.findOne({_id:req.user.cart}).populate('cart').exec();
+  }
+  // do we have something to add?
+  if(req.body.item){
+    cart.items = cart.items || [];
+    cart.items.push(req.body.item);
+    cart.save();
   }
   // confirm
   res.json(req.user.cart);
 });
+
+// get the cart
+app.get(restPath + '/cart', async (req, res)=>{
+  // is there one?
+  let cart;
+  if(req.user.cart){
+    cart = await Cart.findOne({_id:req.user.cart}).populate('cart').exec();
+  }
+  res.json(cart);
+});
+
 
 // any possible routes (with any method) that we have not already defined
 // (so we can test the ACL)
