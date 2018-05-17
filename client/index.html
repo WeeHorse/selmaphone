@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <title>Selmaphone</title>
+  <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>{{brand}}</h1>
+    </header>
+    <login></login>
+    <registration></registration>
+    <product-editor></product-editor>
+    <product
+          v-for="item in products"
+          v-bind:item="item"
+          v-bind:key="item._id">
+    </product>
+  </div>
+  <script src="components/registration.js"></script>
+  <script src="components/login.js"></script>
+  <script src="components/product.js"></script>
+  <script src="editors/product.js"></script>
+  <script src="libs/axios.min.js"></script>
+  <script src="libs/vue.js"></script>
+  <script defer src="client.js"></script>
+</body>
+</html>

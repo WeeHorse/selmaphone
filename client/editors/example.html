@@ -1,0 +1,15 @@
+ExampleEditor.template(){ return `
+
+  <form @submit.prevent="submit">
+    <fieldset>
+      <legend>Skapa en ny försäkring</legend>
+      <input :disabled="loading" type="text" v-model="title">
+      <br>
+      <textarea :disabled="loading" v-model="content"></textarea>
+      <br>
+      <input :disabled="loading" type="submit" value="Spara">
+    </fieldset>
+  </form>
+
+`;
+}

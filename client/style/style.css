@@ -1,0 +1,12 @@
+body{
+  background-image:url(../images/earth-by-night.jpg);
+  background-size:cover;
+  background-attachment: fixed;
+  min-height:10vh;
+  color:white;
+  padding:2vmax;
+}
+#app{
+  padding:2vmax;
+  background-color: rgba(0,0,0,0.8);
+}
